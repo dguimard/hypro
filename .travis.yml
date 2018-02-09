@@ -56,14 +56,21 @@ addons:
       name: "hypro/hypro"
       description: "<Your project description here>"
       notification_email: stefan.schupp@cs.rwth-aachen.de
-      build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=g++-6"
+      build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER"
       build_command: "make resources && make -j2"
       branch_pattern: coverity_scan
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      compiler: gcc
+      env: COMPILER=g++-6
 
 before_install:
   - cd .travis/ && source setupTravis.sh && cd ../
   - sudo motion update || echo 'up to date'
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 install:
   - git clone https://github.com/smtrat/carl.git && cd carl && mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=Release .. && make resources && make lib_carl -j2

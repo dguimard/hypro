@@ -56,8 +56,8 @@ addons:
       name: "hypro/hypro"
       description: "<Your project description here>"
       notification_email: stefan.schupp@cs.rwth-aachen.de
-      build_command_prepend: "mkdir build && cd build && cmake .."
-      build_command: "make"
+      build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER"
+      build_command: "make resources && make -j2"
       branch_pattern: coverity_scan
 
 matrix:
@@ -73,10 +73,9 @@ before_install:
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 install:
-  - git clone https://github.com/smtrat/carl.git && cd carl && mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=Release .. && make resources && make lib_carl VERBOSE=1
+  - git clone https://github.com/smtrat/carl.git && cd carl && mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=Release .. && make resources && make lib_carl -j2
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
-  - mkdir build && cd build && cmake $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER .. && make resources && make VERBOSE=1
-  - make test
+  - mkdir build && cd build && cmake $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER .. && make resources && make -j2
 

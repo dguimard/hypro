@@ -10,7 +10,7 @@ before_install:
 language: cpp
 branches:
   only:
-  - master
+  - coverity_scan
 
 # Environment variables
 env:

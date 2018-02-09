@@ -56,16 +56,9 @@ addons:
       name: "hypro/hypro"
       description: "<Your project description here>"
       notification_email: stefan.schupp@cs.rwth-aachen.de
-      build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER"
+      build_command_prepend: "mkdir build && cd build && cmake .."
       build_command: "make resources && make -j2"
       branch_pattern: coverity_scan
-
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      compiler: gcc
-      env: COMPILER=g++-6
 
 before_install:
   - cd .travis/ && source setupTravis.sh && cd ../

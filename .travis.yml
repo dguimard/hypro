@@ -1,12 +1,3 @@
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "VrgSZAgTRTdH1rq0OHXHtArOA5SyLsJX9YA9O5c+PSXI/drMjc3pGsTIK3NA7xcyGaEIT+DjzV36yxvAz/3uurYkFtiz/sl1suziy6nSNBqvQSE01lBU9GnqHpkPg6/alnijG0Bf3KvXTdw5MmRaK+f9corNJAa+s1sP0rP7WMQ="
-
-before_install:
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
-
 language: cpp
 branches:
   only:
@@ -21,14 +12,6 @@ env:
     # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
     #   via the "travis encrypt" command using the project repo's public key
     - secure: "VrgSZAgTRTdH1rq0OHXHtArOA5SyLsJX9YA9O5c+PSXI/drMjc3pGsTIK3NA7xcyGaEIT+DjzV36yxvAz/3uurYkFtiz/sl1suziy6nSNBqvQSE01lBU9GnqHpkPg6/alnijG0Bf3KvXTdw5MmRaK+f9corNJAa+s1sP0rP7WMQ="
-
-notifications:
-  email:
-    recipients:
-      - stefan.schupp@cs.rwth-aachen.de
-  slack:
-    rooms:
-      - hypro:v2n2cgATRJJYPctLTL1MSfOn#github
 
 sudo: required
 
@@ -57,7 +40,7 @@ addons:
       description: "<Your project description here>"
       notification_email: stefan.schupp@cs.rwth-aachen.de
       build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER"
-      build_command: "make resources && make -j2"
+      build_command: "make resources && make -j2 VERBOSE=1"
       branch_pattern: coverity_scan
 
 matrix:

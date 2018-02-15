@@ -15,6 +15,15 @@ sudo: required
 before_install:
   - cd .travis/ && source setupTravis.sh && cd ../
   - sudo motion update || echo 'up to date'
+  - sudo apt-get install -y cmake-data
+  - sudo apt-get install -y libboost1.55-all-dev
+  - sudo apt-get install -y libeigen3-dev
+  - sudo apt-get install -y libgmp-dev
+  - sudo apt-get install -y g++-6
+  - sudo apt-get install -y libc++-dev
+  - sudo apt-get install -y uuid-dev
+  - sudo apt-get install -y openjdk-9-jre
+  - git clone https://github.com/smtrat/carl.git && cd carl && mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_BUILD_TYPE=Release .. && make resources && make lib_carl -j2
   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 addons:
@@ -23,16 +32,6 @@ addons:
       - boost-latest
       - george-edison55-precise-backports
       - ubuntu-toolchain-r-test
-    packages:
-      - cmake-data
-      - libboost1.55-all-dev
-      - libeigen3-dev
-      - libgmp-dev
-      - libgtest-dev
-      - g++-6
-      - libc++-dev
-      - uuid-dev
-      - openjdk-9-jre
   coverity_scan:
     project:
       name: "hypro/hypro"
@@ -41,10 +40,6 @@ addons:
       build_command_prepend: "cmake . $FLAGS -DCMAKE_CXX_COMPILER=g++-6"
       build_command: "make"
       branch_pattern: coverity_scan
-
-
-install:
-  - git clone https://github.com/smtrat/carl.git && cd carl && mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_BUILD_TYPE=Release .. && make resources && make lib_carl -j2
 
 before_script:
 

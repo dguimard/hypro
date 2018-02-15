@@ -39,8 +39,8 @@ addons:
       name: "hypro/hypro"
       description: "<Your project description here>"
       notification_email: stefan.schupp@cs.rwth-aachen.de
-      build_command_prepend: "mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER"
-      build_command: "make resources && make -j2 VERBOSE=1"
+      build_command_prepend: mkdir build && cd build && cmake .. $FLAGS -DCMAKE_CXX_COMPILER=$COMPILER
+      build_command: make
       branch_pattern: coverity_scan
 
 matrix:
